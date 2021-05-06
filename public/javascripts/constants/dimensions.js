@@ -20,4 +20,4 @@ export const Rresolution = 0.08
 
 export const BLUR = 5
 
-export const LINE_INTERVAL = 10
+export const LINE_INTERVAL = 5
