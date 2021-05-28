@@ -9,7 +9,7 @@ import { seed, noise } from './utilities/noise.js'
 import { remap, clamp } from './utilities/index.js'
 import { COLORS } from './constants/colors.js'
 import {
-  Δθ, Δy, YOFFSET, CULL, FADE, RADII, θresolution, Rresolution, BLUR, LINE_INTERVAL
+  Δθ, Δy, YOFFSET, CULL, FADE, RADII, θresolution, Rresolution, BLUR, LINE_INTERVAL, FPS
 } from './constants/dimensions.js'
 
 // Copyright (c) 2020 Nathaniel Wroblewski
@@ -42,7 +42,7 @@ let tick = 0
 
 context.shadowBlur = BLUR
 
-const step = () => {
+const render = () => {
   const projectedPoints = []
   const segments = points.length / RADII.length
 
@@ -119,8 +119,18 @@ const step = () => {
   // prevent θ from getting too large
   // expect distortion & repetition when this wraps (360deg x 30 revolutions)
   if (θ === 10800) θ = 0
+}
 
+let prevTick = 0
+
+const step = () => {
   window.requestAnimationFrame(step)
+
+  const now = Math.round(FPS * Date.now() / 1000)
+  if (now === prevTick) return
+  prevTick = now
+
+  render()
 }
 
 step()
